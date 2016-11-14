@@ -1,6 +1,7 @@
 package heap;
  /*
- * Instructor's version haha
+ * Basia Sudol bas334 and Drew Mera dnm54
+ * Instructor's version
  * 
  */
 

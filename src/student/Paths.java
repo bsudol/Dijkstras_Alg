@@ -42,7 +42,7 @@ public class Paths {
          shortest path (thus far, for nodes in the frontier set). For this
          purpose, we provide static class SFdata.
          
-         You have to declare the HashMap field for and describe carefully what it
+         You have to declare the HashMap local variable for and describe carefully what it
          means. WRITE A PRECISE DEFINITION OF IT.
 
          Note 1: Read the notes on pages 2..3 of the handout carefully.
@@ -61,8 +61,25 @@ public class Paths {
     	
     	
     	//min-heap (as implemented in assignment A6) should be used for the frontier set
+    	LinkedList<Node> SettledSet = new LinkedList<Node>();
+    	Heap FrontierSet = new Heap();
     	
-        return new LinkedList<Node>(); // no path found
+    	Node n = start;
+    	Edge myedge;
+    	Node mynode;
+    	
+    	SettledSet.add(start);
+    	
+    	for (Edge k : n.getExits()) {
+    		//add all neighboring nodes to Frontier Set
+    		mynode = k.getOther(n);
+    		FrontierSet.add(mynode, k.length);	 		
+    	}
+    	//polling frontier set = shortest distance, add to settled set
+    	//SettledSet.add(FrontierSet.poll());
+    	
+    	//clear Frontier set and iterate unti you get to end?
+        return SettledSet;
     }
 
     /** Return the path from the start node to node end.
