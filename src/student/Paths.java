@@ -59,27 +59,30 @@ public class Paths {
          Method pathDistance uses one more: n1.getEdge(n2)
          */
     	
-    	
     	//min-heap (as implemented in assignment A6) should be used for the frontier set
-    	LinkedList<Node> SettledSet = new LinkedList<Node>();
-    	Heap FrontierSet = new Heap();
-    	
-    	Node n = start;
-    	Edge myedge;
-    	Node mynode;
-    	
-    	SettledSet.add(start);
-    	
-    	for (Edge k : n.getExits()) {
-    		//add all neighboring nodes to Frontier Set
-    		mynode = k.getOther(n);
-    		FrontierSet.add(mynode, k.length);	 		
+
+    	HashMap<Node, SFdata> S = new HashMap<Node, SFdata>();
+    	Heap<Node> F = new Heap<Node>();
+
+    	//S.put(start,  new SFdata(0,null));
+    	F.add(start, 0);
+		Node backpointer = start;
+		int length;
+
+    	while(F.size() != 0) {
+	    	Node mynode = F.poll();
+	    	
+	    	for (Edge e : mynode.getExits()) {
+	    		if(!S.containsKey(e.getOther(mynode))){
+	        		F.add(e.getOther(mynode), e.length + S.get(mynode).distance);
+	    	    	S.put(e.getOther(mynode), new SFdata(e.length + S.get(mynode).distance, mynode));
+	    		}
+	    	}
+
+	    	backpointer = mynode;
     	}
-    	//polling frontier set = shortest distance, add to settled set
-    	//SettledSet.add(FrontierSet.poll());
-    	
-    	//clear Frontier set and iterate unti you get to end?
-        return SettledSet;
+        
+        return constructPath(end, S);
     }
 
     /** Return the path from the start node to node end.
