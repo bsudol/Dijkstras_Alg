@@ -64,18 +64,16 @@ public class Paths {
     	HashMap<Node, SFdata> S = new HashMap<Node, SFdata>();
     	Heap<Node> F = new Heap<Node>();
 
-    	F.add(start, 0);
     	S.put(start, new SFdata(0, null));
+    	F.add(start, 0);
 
 		Node w; //as defined in the algorithm slides
 		int Lw; //as defined in the slides
 
-    	while(F.size() != 0) {
+    	while(F.size() > 0) {
 	    	Node f = F.poll();
 	    	
-	    	if (f.equals(end)) {
-	    		return constructPath(f, S);
-	    	}
+	    	if (f.equals(end)) return constructPath(f, S);
 	    	
 	    	if(f.getExits().size() == 0) return new LinkedList<Node>();
 	    	
@@ -90,12 +88,11 @@ public class Paths {
 	        		F.add(w, Lw);
 	    		}
 	    		else {
-	    			if(e.length + Lw < S.get(w).distance) {
-	    				S.put(w, new SFdata(Lw + e.length, f));
+	    			if(S.get(w).distance > Lw + e.length) {
 	    				F.changePriority(w, Lw + e.length);
+	    				S.put(w, new SFdata(Lw + e.length, f));
 	    			}
 	    		}
-	    		//still need to make sure it quits after it finds the shortest path
 	    	}
     	}
         
