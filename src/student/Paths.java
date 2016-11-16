@@ -64,22 +64,33 @@ public class Paths {
     	HashMap<Node, SFdata> S = new HashMap<Node, SFdata>();
     	Heap<Node> F = new Heap<Node>();
 
-    	//S.put(start,  new SFdata(0,null));
     	F.add(start, 0);
-		Node backpointer = start;
-		int length;
+    	S.put(start, new SFdata(0, null));
+
+		Node w;
+		int Lw;
 
     	while(F.size() != 0) {
-	    	Node mynode = F.poll();
+	    	Node f = F.poll();
 	    	
-	    	for (Edge e : mynode.getExits()) {
-	    		if(!S.containsKey(e.getOther(mynode))){
-	        		F.add(e.getOther(mynode), e.length + S.get(mynode).distance);
-	    	    	S.put(e.getOther(mynode), new SFdata(e.length + S.get(mynode).distance, mynode));
+	    	if (f.equals(end)) {
+	    		return constructPath(f, S);
+	    	}
+	    	
+	    	for (Edge e : f.getExits()) {
+	    		w = e.getOther(f);
+	    		Lw = S.get(f).distance;
+	    		if(!S.containsKey(w)){
+		    		S.put(w,  new SFdata(Lw, f));
+	        		F.add(w, Lw);
+	    		}
+	    		else {
+	    			if(e.length + Lw < S.get(w).distance) {
+	    				S.put(w, new SFdata(Lw + e.length, f));
+	    				F.changePriority(w, Lw + e.length);
+	    			}
 	    		}
 	    	}
-
-	    	backpointer = mynode;
     	}
         
         return constructPath(end, S);
