@@ -77,6 +77,8 @@ public class Paths {
 	    		return constructPath(f, S);
 	    	}
 	    	
+	    	if(f.getExits().size() == 0) return new LinkedList<Node>();
+	    	
 	    	for (Edge e : f.getExits()) {
 	    		w = e.getOther(f);
 	    		Lw = S.get(f).distance;
