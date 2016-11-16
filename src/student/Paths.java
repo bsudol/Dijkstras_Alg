@@ -67,8 +67,8 @@ public class Paths {
     	F.add(start, 0);
     	S.put(start, new SFdata(0, null));
 
-		Node w;
-		int Lw;
+		Node w; //as defined in the algorithm slides
+		int Lw; //as defined in the slides
 
     	while(F.size() != 0) {
 	    	Node f = F.poll();
@@ -79,10 +79,13 @@ public class Paths {
 	    	
 	    	if(f.getExits().size() == 0) return new LinkedList<Node>();
 	    	
+	    	
 	    	for (Edge e : f.getExits()) {
 	    		w = e.getOther(f);
 	    		Lw = S.get(f).distance;
+	    		
 	    		if(!S.containsKey(w)){
+	    			Lw = e.length + S.get(f).distance;
 		    		S.put(w,  new SFdata(Lw, f));
 	        		F.add(w, Lw);
 	    		}
@@ -92,6 +95,7 @@ public class Paths {
 	    				F.changePriority(w, Lw + e.length);
 	    			}
 	    		}
+	    		//still need to make sure it quits after it finds the shortest path
 	    	}
     	}
         
