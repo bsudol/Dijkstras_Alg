@@ -63,40 +63,37 @@ public class Paths {
 
     	HashMap<Node, SFdata> S = new HashMap<Node, SFdata>();
     	Heap<Node> F = new Heap<Node>();
-
-    	S.put(start, new SFdata(0, null));
+    	
+    	S.put(start,  new SFdata(0,null));
     	F.add(start, 0);
-
-		Node w; //as defined in the algorithm slides
-		int Lw; //as defined in the slides
-
-    	while(F.size() > 0) {
-	    	Node f = F.poll();
-	    	
-	    	if (f.equals(end)) return constructPath(f, S);
-	    	
-	    	if(f.getExits().size() == 0) return new LinkedList<Node>();
-	    	
-	    	
-	    	for (Edge e : f.getExits()) {
-	    		w = e.getOther(f);
-	    		Lw = S.get(f).distance;
-	    		
-	    		if(!S.containsKey(w)){
-	    			Lw = e.length + S.get(f).distance;
-		    		S.put(w,  new SFdata(Lw, f));
-	        		F.add(w, Lw);
-	    		}
-	    		else {
-	    			if(S.get(w).distance > Lw + e.length) {
-	    				F.changePriority(w, Lw + e.length);
-	    				S.put(w, new SFdata(Lw + e.length, f));
-	    			}
-	    		}
-	    	}
+    	
+    	while (F.size() > 0) {
+    		Node f = F.poll();
+    		
+    		if (f.equals(end)) return constructPath(f, S);
+    		
+    		if (f.getExitsSize() == 0) return new LinkedList<Node>();
+    		
+    		for (Edge e : f.getExits()) {
+    			Node w = e.getOther(f);
+    			int Lw = S.get(f).distance;
+    			
+    			if (!S.containsKey(w)) {
+    				Lw = e.length + S.get(f).distance;
+    				S.put(w, new SFdata(Lw, f));
+    	    		F.add(w, Lw);
+    			}
+    			else {
+    				if (S.get(w).distance > Lw + e.length) {
+    					S.replace(w, new SFdata(Lw + e.length, f));
+    					F.changePriority(w, Lw + e.length);
+    				}
+    			}
+    		}
+    		
     	}
         
-        return constructPath(end, S);
+        return new LinkedList<Node>();
     }
 
     /** Return the path from the start node to node end.

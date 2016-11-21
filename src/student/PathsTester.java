@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONObject;
 import org.junit.FixMethodOrder;
@@ -32,6 +33,7 @@ public class PathsTester {
         List<Node> expected= new LinkedList<Node>();
         expected.add(n);
         assertEquals(expected, path);
+        System.out.println("Random: "+new Random(128).nextInt());
     }
 
     @Test
@@ -71,8 +73,6 @@ public class PathsTester {
         List<Node> expected1= new LinkedList<Node>();
         expected1.add(n);
         expected1.add(n1);
-        System.out.println("Expected is: " + expected1);
-        System.out.println("calculated is: " + path1);
         assertEquals(expected1, path1);
 
         List<Node> path2= Paths.shortestPath(n1, n);
@@ -117,15 +117,18 @@ public class PathsTester {
         assertEquals(34, pd.size);
         checkAllShortestPaths(g, pd);
     }
-    
+
     @Test
-    /** Test all shortest paths on map seededw with  */
-    public void test80MapSeeded() {
-        Graph g= Graph.randomBoard(5842236091853851505L);
-        PathData pd= new PathData("data/Maps/Seed5842236091853851505L.txt", g);
-        assertEquals(46, pd.size);
+    /** Test all shortest paths on map seeded with 128 */
+    public void test80MapSeeded128() {
+        Graph g= getGraph("data/Maps/seed128.txt");
+        PathData pd= new PathData("data/Maps/seed128distances.txt", g);
+        assertEquals(50, pd.size);
         checkAllShortestPaths(g, pd);
     }
+
+    
+
 
     /** Check the shortest paths in g from each node to each node, as
      * given by Paths.shortestPaths, matches that in pd. Use the ordering
@@ -156,5 +159,4 @@ public class PathsTester {
         }
     }
 }
-
 
